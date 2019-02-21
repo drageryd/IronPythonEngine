@@ -6,7 +6,7 @@ public class DebugLogExample : MonoBehaviour {
 
     PythonEngine pythonEngine;
     public string path;
-    int count;
+    public int count;
     bool running;
 
     [TextArea]
@@ -17,7 +17,7 @@ public class DebugLogExample : MonoBehaviour {
         pythonEngine = GetComponent<PythonEngine>();
         count = 0;
         running = false;
-	}
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -40,6 +40,16 @@ public class DebugLogExample : MonoBehaviour {
     // e.g bouncing ball with sphere collider set to trigger
     private void OnTriggerEnter(Collider other)
     {
+        //if (count < 2) 
+        //{
+            if (!pythonEngine.IsRunning())
+            {
+                count += 1;
+                Debug.Log("Hej");
+                pythonEngine.ExecuteFile(path);
+            }
+        //}
+        /*
         if (!pythonEngine.IsRunning())
         {
             running = true;
@@ -58,5 +68,9 @@ public class DebugLogExample : MonoBehaviour {
             pythonEngine.WriteStdIn(stdin, true);
             count++;
         }
+        */
+
+        //pythonEngine.ListPorts();
+        //pythonEngine.RunPortCommand("Cube", "test");
     }
 }
