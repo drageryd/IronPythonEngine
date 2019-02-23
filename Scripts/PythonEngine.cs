@@ -18,7 +18,11 @@ using System.Threading;
 public class PythonEngine : MonoBehaviour
 {
 
+    //Path to script
     private string path;
+    //Directory from where python was executed
+    private string cwd;
+    private string unityCwd;
     private ScriptEngine m_engine;
     private ScriptScope m_scope;
     private StreamStdio pythonStdin;
@@ -35,49 +39,18 @@ public class PythonEngine : MonoBehaviour
     {
         //Create python engine
         m_engine = Python.CreateEngine();
+        cwd = Directory.GetCurrentDirectory();
+        unityCwd = Directory.GetCurrentDirectory();
 
         //Connect to gamobject comports
         //TODO: Initialize here only
         comPorts = GetComponent<ComPorts>();
         Debug.Log("comports " + comPorts);
-        
-        //Reset engine
-        //Reset();
     }
 
     // Update is called once per frame
     void Update()
     {
-        //m_engine.Execute("output = 'Python says hi!'", m_scope);
-        //m_engine.ExecuteFile(path, m_scope);
-        /*
-        // Get scope variables
-        if (m_scope != null)
-        {
-        IEnumerable<string> variables = m_scope.GetVariableNames();
-        bool variable_exists = false;
-        foreach (string varname in variables)
-        {
-        if (varname == "data_available")
-        {
-            variable_exists = true;
-        }
-        }
-
-        if (variable_exists)
-        {
-        bool data_available = m_scope.GetVariable<bool>("data_available");
-        if (data_available)
-        {
-            string data = m_scope.GetVariable<string>("data");
-            string s = string.Format("{0}: {1}", Time.time, data);
-            Debug.Log("From scope:" + s);
-            //Debug.Log("Stream size: " + pythonStdout.Length);
-            m_scope.SetVariable("data_available", false);
-        }
-        }
-        }
-        */
     }
 
     void OnDestroy()
@@ -87,6 +60,9 @@ public class PythonEngine : MonoBehaviour
         {
             myThread.Abort();
         }
+
+        //Reset working directory
+        Directory.SetCurrentDirectory(unityCwd);
     }
 
     //Setup PythonEngine for new execution
@@ -102,8 +78,16 @@ public class PythonEngine : MonoBehaviour
 
         //Add listed comports in comports
         InitPorts();
-        
+
         pythonStdoutLen = 0;
+    }
+
+    public void SetCwd(string path)
+    {
+        DirectoryInfo di = new DirectoryInfo(path);
+        if (di.Exists) {
+            cwd = path;
+        }
     }
 
     //Is the engine running?
@@ -166,7 +150,10 @@ public class PythonEngine : MonoBehaviour
     // Thread function
     void Run()
     {
-        // Run script
+        //Set working directory
+        Directory.SetCurrentDirectory(cwd);
+
+        //Run script
         ScriptSource m_source = m_engine.CreateScriptSourceFromFile(path);
         m_source.ExecuteAndWrap(m_scope, out exception);
         if (exception != null)
@@ -174,6 +161,9 @@ public class PythonEngine : MonoBehaviour
             byte[] bytes = Encoding.ASCII.GetBytes(GetException());
             pythonStdout.Write(bytes, 0, bytes.Length);
         }
+
+        //Reset working directory
+        Directory.SetCurrentDirectory(unityCwd);
     }
 
 

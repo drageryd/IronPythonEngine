@@ -13,3 +13,8 @@ time.sleep(2)
 cube.test2(200)
 
 time.sleep(5)
+
+print("hej")
+
+
+time.sleep(5)
