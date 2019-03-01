@@ -125,6 +125,17 @@ public class PythonEngine : MonoBehaviour
         return pythonStdout.GetText();
     }
 
+    public bool StdOutAvailable()
+    {
+        return (pythonStdout.Length != 0);
+    }
+
+    public string GetLine()
+    {
+        StreamReader sr = new StreamReader(pythonStdout);
+        return sr.ReadLine()+"\n";
+    }
+
     //Returns exceptions in python script as string
     public string GetException()
     {

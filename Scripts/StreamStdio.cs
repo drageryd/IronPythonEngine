@@ -20,6 +20,7 @@ namespace CustomStream
 
         public StreamStdio()
         {
+            Position = 0;
             alreadyConverted = "";
             list = new List<int>();
         }
@@ -27,10 +28,7 @@ namespace CustomStream
         public override int Read(byte[] buffer, int offset, int count)
         {
             //Wait here for bytes
-            while (list.Count == 0)
-            {
-                //Do nothing
-            }
+            if (list.Count == 0) return 0;
 
             //How many bytes to read
             int length = (list.Count > count) ? count : list.Count;
