@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Text;
 using System.Collections.Generic;
 
-namespace Application
+namespace CustomStream
 {
     public class StreamStdio : Stream
     {

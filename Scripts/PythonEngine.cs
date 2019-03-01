@@ -11,7 +11,7 @@ using System.Runtime.Remoting;
 
 using System.IO;
 using System.Text;
-using Application;
+using CustomStream;
 
 using System.Threading;
 
