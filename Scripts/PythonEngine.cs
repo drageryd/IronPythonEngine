@@ -177,6 +177,21 @@ public class PythonEngine : MonoBehaviour
         Directory.SetCurrentDirectory(unityCwd);
     }
 
+    public void Abort()
+    {
+        if (myThread.IsAlive)
+        {
+            myThread.Abort();
+            if (exception != null)
+            {
+                byte[] bytes = Encoding.ASCII.GetBytes(GetException());
+                pythonStdout.Write(bytes, 0, bytes.Length);
+            }
+
+            //Reset working directory
+            Directory.SetCurrentDirectory(unityCwd);
+        }
+    }
 
     //Comport communication
     void InitPorts()
