@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ComPort : MonoBehaviour
 {
-    public string name;
+    public string portName;
     private List<string> commands;
 
     // Use this for initialization
@@ -32,7 +32,7 @@ public class ComPort : MonoBehaviour
     //These are used by Python
     public string get_name()
     {
-        if (name != null) return name;
+        if (portName != null) return portName;
         else return "UnnamedPort";
     }
 
