@@ -100,6 +100,9 @@ public class PythonEngine : MonoBehaviour
     //Execute file path
     public void ExecuteFile(string p)
     {
+        FileInfo f = new FileInfo(Path.Combine(cwd, p));
+        Debug.Log(f);
+        Debug.Log(f.Exists);
         if (!IsRunning())
         {
             // Reset before execution

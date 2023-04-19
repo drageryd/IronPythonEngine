@@ -17,6 +17,14 @@ public class DebugLogExample : MonoBehaviour {
         pythonEngine = GetComponent<PythonEngine>();
         count = 0;
         running = false;
+
+        if (!pythonEngine.IsRunning())
+        {
+            running = true;
+            Debug.Log("Executing " + stdin);
+            pythonEngine.ExecuteFile(path);
+            count = 0;
+        }
     }
 	
 	// Update is called once per frame
